@@ -1,1 +1,0 @@
-# yoiqrambadian.github.io
