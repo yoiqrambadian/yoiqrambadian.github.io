@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 
-<title>PembekalanRabu slides</title>
+<title>Untitled1 slides</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13242,17 +13242,402 @@ a.anchor-link {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Pembekalan-Hari-Rabu">Pembekalan Hari Rabu<a class="anchor-link" href="#Pembekalan-Hari-Rabu">&#182;</a></h1><p><strong>Yoiq Satria Rambadian</strong></p>
-
+<h1 id="Private-Vehicle-Usage">Private Vehicle Usage<a class="anchor-link" href="#Private-Vehicle-Usage">&#182;</a></h1>
 </div>
 </div>
 </div></section></section><section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Run-faster,-get-more-pain">Run faster, get more pain<a class="anchor-link" href="#Run-faster,-get-more-pain">&#182;</a></h2>
+<h2 id="Importing-Data">Importing Data<a class="anchor-link" href="#Importing-Data">&#182;</a></h2>
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="s">&#39;dplyr&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="n">survey</span> <span class="o">&lt;-</span> <span class="nf">read.csv2</span><span class="p">(</span><span class="s">&#39;/home/yoiqsrambadian/Documents/survey.csv&#39;</span><span class="p">)</span>
+
+<span class="n">survey</span> <span class="o">&lt;-</span> <span class="n">survey</span> <span class="o">%&gt;%</span>
+    <span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">SurveiPenggunaKendaraanBermotor_Id</span><span class="p">,</span> <span class="o">-</span><span class="n">Entry_Timestamp</span><span class="p">,</span> <span class="o">-</span><span class="n">Entry_Status</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Data-Preprocess">Data Preprocess<a class="anchor-link" href="#Data-Preprocess">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="nf">colnames</span><span class="p">(</span><span class="n">survey</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;PenggunaMotor&#39;</span><span class="p">,</span> <span class="s">&#39;JK&#39;</span><span class="p">,</span> <span class="s">&#39;Angkatan&#39;</span><span class="p">,</span> <span class="s">&#39;UangSaku&#39;</span><span class="p">,</span> <span class="s">&#39;Jarak&#39;</span><span class="p">,</span> <span class="s">&#39;AsalJabodetabek&#39;</span><span class="p">)</span>
+
+<span class="n">survey</span> <span class="o">&lt;-</span> <span class="n">survey</span> <span class="o">%&gt;%</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="n">UangSaku</span> <span class="o">&gt;</span> <span class="m">500000</span><span class="p">)</span>
+
+<span class="n">survey</span> <span class="o">&lt;-</span> <span class="n">survey</span> <span class="o">%&gt;%</span>
+    <span class="nf">mutate</span><span class="p">(</span><span class="n">LakiLaki</span> <span class="o">=</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">JK</span> <span class="o">==</span> <span class="s">&#39;Laki-Laki&#39;</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span>
+           <span class="n">JK</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span>
+           <span class="n">a54</span> <span class="o">=</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">Angkatan</span> <span class="o">==</span> <span class="s">&#39;Satria Khatulistiwa&#39;</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span>
+           <span class="n">a53</span> <span class="o">=</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">Angkatan</span> <span class="o">==</span> <span class="s">&#39;Gardha Adhikarya&#39;</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span>
+           <span class="n">a52</span> <span class="o">=</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">Angkatan</span> <span class="o">==</span> <span class="s">&#39;Cakra Nusantara&#39;</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span>
+           <span class="n">Angkatan</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span>
+           <span class="n">AsalJabodetabek</span> <span class="o">=</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">AsalJabodetabek</span> <span class="o">==</span> <span class="s">&#39;Jabodetabek&#39;</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span>
+           <span class="n">PenggunaMotor</span> <span class="o">=</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">PenggunaMotor</span> <span class="o">==</span> <span class="s">&#39;Ya&#39;</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Logistic-Regression-Model">Logistic Regression Model<a class="anchor-link" href="#Logistic-Regression-Model">&#182;</a></h2>
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Base-Model">Base Model<a class="anchor-link" href="#Base-Model">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="n">logitModel</span> <span class="o">&lt;-</span> <span class="nf">glm</span><span class="p">(</span><span class="n">PenggunaMotor</span> <span class="o">~</span> <span class="n">UangSaku</span> <span class="o">+</span> <span class="n">Jarak</span> <span class="o">+</span> <span class="n">LakiLaki</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">survey</span><span class="p">,</span> <span class="n">family</span> <span class="o">=</span> <span class="nf">binomial</span><span class="p">(</span><span class="n">link</span> <span class="o">=</span> <span class="s">&#39;logit&#39;</span><span class="p">))</span>
+
+<span class="nf">summary</span><span class="p">(</span><span class="n">logitModel</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_text output_subarea ">
+<pre>
+Call:
+glm(formula = PenggunaMotor ~ UangSaku + Jarak + LakiLaki, family = binomial(link = &#34;logit&#34;), 
+    data = survey)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.9290  -0.7826  -0.2276   0.6798   2.1229  
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)   
+(Intercept) -5.802e+00  1.902e+00  -3.051  0.00228 **
+UangSaku     3.140e-06  1.226e-06   2.561  0.01043 * 
+Jarak        1.856e-01  8.761e-02   2.118  0.03415 * 
+LakiLaki     2.991e+00  1.064e+00   2.812  0.00493 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 63.683  on 45  degrees of freedom
+Residual deviance: 40.238  on 42  degrees of freedom
+AIC: 48.238
+
+Number of Fisher Scoring iterations: 5
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Model-with-Interaction">Model with Interaction<a class="anchor-link" href="#Model-with-Interaction">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="n">logitModel</span> <span class="o">&lt;-</span> <span class="nf">glm</span><span class="p">(</span><span class="n">PenggunaMotor</span> <span class="o">~</span> <span class="n">UangSaku</span> <span class="o">+</span> <span class="n">Jarak</span> <span class="o">+</span> <span class="n">LakiLaki</span> <span class="o">+</span> <span class="n">AsalJabodetabek</span><span class="o">:</span><span class="n">a54</span> <span class="o">+</span> <span class="n">UangSaku</span><span class="o">:</span><span class="n">Jarak</span><span class="o">:</span><span class="n">a53</span><span class="p">,</span>
+                  <span class="n">data</span> <span class="o">=</span> <span class="n">survey</span><span class="p">,</span> <span class="n">family</span> <span class="o">=</span> <span class="nf">binomial</span><span class="p">(</span><span class="n">link</span> <span class="o">=</span> <span class="s">&#39;logit&#39;</span><span class="p">))</span>
+
+<span class="nf">summary</span><span class="p">(</span><span class="n">logitModel</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_text output_subarea ">
+<pre>
+Call:
+glm(formula = PenggunaMotor ~ UangSaku + Jarak + LakiLaki + AsalJabodetabek:a54 + 
+    UangSaku:Jarak:a53, family = binomial(link = &#34;logit&#34;), data = survey)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-2.08795  -0.45639  -0.04568   0.45983   2.53316  
+
+Coefficients:
+                      Estimate Std. Error z value Pr(&gt;|z|)   
+(Intercept)         -1.183e+01  3.827e+00  -3.092  0.00199 **
+UangSaku             6.534e-06  2.295e-06   2.846  0.00442 **
+Jarak                8.261e-01  3.499e-01   2.361  0.01825 * 
+LakiLaki             4.680e+00  1.689e+00   2.771  0.00558 **
+AsalJabodetabek:a54  3.879e+00  1.903e+00   2.039  0.04150 * 
+UangSaku:Jarak:a53  -4.320e-07  2.208e-07  -1.956  0.05041 . 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 63.683  on 45  degrees of freedom
+Residual deviance: 29.297  on 40  degrees of freedom
+AIC: 41.297
+
+Number of Fisher Scoring iterations: 6
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Final-Model">Final Model<a class="anchor-link" href="#Final-Model">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="n">logitModel</span> <span class="o">&lt;-</span> <span class="nf">glm</span><span class="p">(</span><span class="n">PenggunaMotor</span> <span class="o">~</span> <span class="n">UangSaku</span> <span class="o">+</span> <span class="n">Jarak</span> <span class="o">+</span> <span class="n">LakiLaki</span> <span class="o">+</span> <span class="n">AsalJabodetabek</span><span class="o">:</span><span class="n">a54</span><span class="p">,</span>
+                  <span class="n">data</span> <span class="o">=</span> <span class="n">survey</span><span class="p">,</span> <span class="n">family</span> <span class="o">=</span> <span class="nf">binomial</span><span class="p">(</span><span class="n">link</span> <span class="o">=</span> <span class="s">&#39;logit&#39;</span><span class="p">))</span>
+
+<span class="nf">summary</span><span class="p">(</span><span class="n">logitModel</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_text output_subarea ">
+<pre>
+Call:
+glm(formula = PenggunaMotor ~ UangSaku + Jarak + LakiLaki + AsalJabodetabek:a54, 
+    family = binomial(link = &#34;logit&#34;), data = survey)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-1.97670  -0.58166  -0.09746   0.58723   2.44999  
+
+Coefficients:
+                      Estimate Std. Error z value Pr(&gt;|z|)   
+(Intercept)         -8.254e+00  2.804e+00  -2.944  0.00324 **
+UangSaku             4.212e-06  1.622e-06   2.597  0.00940 **
+Jarak                2.491e-01  1.021e-01   2.441  0.01465 * 
+LakiLaki             4.335e+00  1.537e+00   2.821  0.00479 **
+AsalJabodetabek:a54  3.790e+00  1.732e+00   2.188  0.02868 * 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 63.683  on 45  degrees of freedom
+Residual deviance: 34.459  on 41  degrees of freedom
+AIC: 44.459
+
+Number of Fisher Scoring iterations: 6
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Prediction">Prediction<a class="anchor-link" href="#Prediction">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="n">fit</span> <span class="o">&lt;-</span> <span class="nf">predict</span><span class="p">(</span><span class="n">logitModel</span><span class="p">,</span> <span class="n">survey</span><span class="p">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&#39;response&#39;</span><span class="p">)</span>
+<span class="n">fit.class</span> <span class="o">&lt;-</span> <span class="nf">as.factor</span><span class="p">(</span><span class="nf">ifelse</span><span class="p">(</span><span class="n">fit</span> <span class="o">&gt;</span> <span class="m">.5</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+<span class="n">caret</span><span class="o">::</span><span class="nf">confusionMatrix</span><span class="p">(</span><span class="n">fit.class</span><span class="p">,</span> <span class="nf">as.factor</span><span class="p">(</span><span class="n">survey</span><span class="o">$</span><span class="n">PenggunaMotor</span><span class="p">),</span> <span class="n">positive</span> <span class="o">=</span> <span class="s">&#39;1&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Registered S3 methods overwritten by &#39;ggplot2&#39;:
+  method         from 
+  [.quosures     rlang
+  c.quosures     rlang
+  print.quosures rlang
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_text output_subarea ">
+<pre>Confusion Matrix and Statistics
+
+          Reference
+Prediction  0  1
+         0 20  2
+         1  4 20
+                                          
+               Accuracy : 0.8696          
+                 95% CI : (0.7374, 0.9506)
+    No Information Rate : 0.5217          
+    P-Value [Acc &gt; NIR] : 6.616e-07       
+                                          
+                  Kappa : 0.7396          
+                                          
+ Mcnemar&#39;s Test P-Value : 0.6831          
+                                          
+            Sensitivity : 0.9091          
+            Specificity : 0.8333          
+         Pos Pred Value : 0.8333          
+         Neg Pred Value : 0.9091          
+             Prevalence : 0.4783          
+         Detection Rate : 0.4348          
+   Detection Prevalence : 0.5217          
+      Balanced Accuracy : 0.8712          
+                                          
+       &#39;Positive&#39; Class : 1               
+                                          </pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
